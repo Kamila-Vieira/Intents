@@ -3,6 +3,7 @@ package br.edu.scl.ifsp.sdm.intents
 import android.Manifest.permission.CALL_PHONE
 import android.content.Intent
 import android.content.Intent.ACTION_CALL
+import android.content.Intent.ACTION_DIAL
 import android.content.Intent.ACTION_VIEW
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
@@ -93,6 +94,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.dialMi -> {
+                callPhone(false)
                 true
             }
 
@@ -110,9 +112,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun callPhone(){
+    private fun callPhone(call: Boolean = true){
         startActivity(
-            Intent(ACTION_CALL).apply {
+            Intent(if (call) ACTION_CALL else ACTION_DIAL).apply {
                 "tel: ${activityMainBinding.parameterTv.text}".also {
                     data = Uri.parse(it)
                 }
