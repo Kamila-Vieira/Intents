@@ -11,12 +11,6 @@ import br.edu.scl.ifsp.sdm.intents.Extras.PARAMETER_EXTRA
 import br.edu.scl.ifsp.sdm.intents.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
-    /** Unnecessary code -> Utilizado na versão obsoleta do startActivityForResult
-     * companion object {
-        private const val PARAMETER_REQUEST_CODE = 0
-    }*/
-
     private val activityMainBinding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
@@ -44,22 +38,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 parameterArl.launch(parameterIntent)
 
-                /** Deprecated -> Substituída pela ActivityResultLauncher
-                 *  startActivityForResult(parameterIntent, PARAMETER_REQUEST_CODE) */
             }
         }
     }
-
-    /** Deprecated -> Substituída pela ActivityResultLaunche
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == PARAMETER_REQUEST_CODE && resultCode == RESULT_OK){
-            data?.getStringExtra(PARAMETER_EXTRA)?.also {
-                activityMainBinding.parameterTv.text = it
-            }
-        }
-    }
-    **/
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -69,6 +50,10 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.openActivityMi -> {
+                val parameterIntent = Intent("OPEN_PARAMETER_ACTIVITY_ACTION").apply {
+                    putExtra(PARAMETER_EXTRA, activityMainBinding.parameterTv.text)
+                }
+                parameterArl.launch(parameterIntent)
                 true
             }
             R.id.viewMi -> {
